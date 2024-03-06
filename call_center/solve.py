@@ -12,9 +12,8 @@ class Problem:
         assert D >= 0
 
         # demands for weekdays
-        self.d = d
-        # demands for weekends
-        self.e = e
+        self.d = np.hstack([d] * 5)
+        self.d = np.hstack([self.d, e, e])
         # maximum difference in demand and employees
         self.D = D
         # length of every shift
@@ -67,13 +66,19 @@ def solve(p: Problem) -> tuple[np.ndarray, int]:
 
     # start times of shifts
     x = model.addVars(p.n, lb=0, ub=g.GRB.INFINITY, vtype=g.GRB.INTEGER, name='x')
+    # slack variable to express absolute value in the objective
+    z = model.addVars(p.n, lb=0, ub=g.GRB.INFINITY, vtype=g.GRB.INTEGER, name='x')
 
     for i in range(p.n):
-        # number of shifts started 8 hours before are at least the requirement
-        model.addConstr(g.quicksum(x[j % p.n] for j in p.shift_range(i)) >= p.d[i], 'satisfy_demand')
+        # absolute value constraints
+        model.addConstr(p.d[i] - g.quicksum(x[j % p.n] for j in p.shift_range(i)) <= z[i], 'abs1')
+        model.addConstr(g.quicksum(x[j % p.n] for j in p.shift_range(i)) - p.d[i] <= z[i], 'abs2')
+        model.addConstr(z[i] >= 0, 'abs3')
+        # constrain difference between demand and employees
+        model.addConstr(p.d[i] - g.quicksum(x[j % p.n] for j in p.shift_range(i)) <= p.D, 'demand')
 
     # minimize number of started shifts
-    model.setObjective(g.quicksum(x[i] for i in range(p.n)), sense=g.GRB.MINIMIZE)
+    model.setObjective(g.quicksum(z), sense=g.GRB.MINIMIZE)
 
     model.optimize()
 
@@ -92,6 +97,6 @@ if __name__ == "__main__":
     # solve the problem with gurobi
     xs, val = solve(problem)
 
-    problem.plot(xs)
+    # problem.plot(xs)
 
     save(xs, val, out_file)
