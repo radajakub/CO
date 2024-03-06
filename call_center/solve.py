@@ -23,15 +23,17 @@ class Problem:
 
 def load(path: str) -> Problem:
     with open(path, 'r') as file:
-        dline = file.readline().strip()
-        d = np.array([int(x) for x in dline.split()])
-
-        eline = file.readline().strip()
-        e = np.array([int(x) for x in eline.split()])
-
+        d = np.array([int(x) for x in file.readline().strip().split()], dtype=int)
+        e = np.array([int(x) for x in file.readline().strip().split()], dtype=int)
         D = int(file.readline().strip())
 
         return Problem(d=d, e=e, D=D)
+
+
+def save(xs: np.ndarray, val: int, path: str) -> None:
+    with open(path, 'w') as file:
+        file.write(f'{val}\n')
+        file.write(' '.join([str(x) for x in xs]))
 
 
 if __name__ == "__main__":
@@ -42,3 +44,7 @@ if __name__ == "__main__":
     out_file = sys.argv[2]
 
     problem = load(in_file)
+
+    # solve the problem with gurobi
+
+    save(np.zeros(24, dtype=int), 0, out_file)
