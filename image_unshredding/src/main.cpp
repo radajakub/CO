@@ -1,5 +1,6 @@
 #include <gurobi_c++.h>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 
@@ -63,15 +64,22 @@ int main(int argc, char *argv[])
 
     std::vector<co::Strip> strips = load(input_path);
 
+    std::vector<std::vector<int>> distances = co::distance_matrix(strips);
+
     for (co::Strip &strip : strips)
     {
         strip.print();
         std::cout << std::endl;
     }
 
-    std::cout << "test distance" << std::endl;
-    std::cout << "S(1) | S(2) -> " << co::distance(strips[0], strips[1]) << std::endl;
-    std::cout << "S(2) | S(1) -> " << co::distance(strips[1], strips[0]) << std::endl;
+    for (int i = 0; i < distances.size(); ++i)
+    {
+        for (int j = 0; j < distances[i].size(); ++j)
+        {
+            std::cout << std::setw(3) << std::setfill(' ') << distances[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 
     return 0;
 }

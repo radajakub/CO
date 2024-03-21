@@ -31,7 +31,7 @@ void co::Strip::print()
 }
 
 // compute distance when a is on the left and b is on the right
-int co::distance(const Strip &a, const Strip &b)
+int co::distance(const co::Strip &a, const co::Strip &b)
 {
     assert(a.h == b.h);
     assert(a.c == b.c);
@@ -49,6 +49,27 @@ int co::distance(const Strip &a, const Strip &b)
     }
 
     return sum;
+}
+
+std::vector<std::vector<int>> co::distance_matrix(const std::vector<co::Strip> &strips)
+{
+    int n = strips.size();
+    // add one dummy as the last node to simulate tsp
+    std::vector<std::vector<int>> distances(n + 1, std::vector<int>(n + 1, 0));
+
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            if (i != j)
+            {
+
+                distances[i][j] = co::distance(strips[i], strips[j]);
+            }
+        }
+    }
+
+    return distances;
 }
 
 std::vector<std::vector<std::vector<int>>> co::vec_to_mat(std::vector<int> &all, int w, int h, int c)

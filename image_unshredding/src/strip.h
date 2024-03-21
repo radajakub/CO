@@ -25,6 +25,8 @@ namespace co
 
     int distance(const Strip &a, const Strip &b);
 
+    std::vector<std::vector<int>> distance_matrix(const std::vector<Strip> &strips);
+
     std::vector<std::vector<std::vector<int>>> vec_to_mat(std::vector<int> &all, int w, int h, int c);
 
 };
