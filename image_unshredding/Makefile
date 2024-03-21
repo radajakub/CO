@@ -10,7 +10,7 @@ LDFLAGS=
 LDLIBS=-L/Library/gurobi1100/macos_universal2/lib -lgurobi_c++ -lgurobi110
 
 # Find all the C++ files in src and test directories
-SRCS=$(SRC_DIR)/main.cpp
+SRCS=$(SRC_DIR)/main.cpp $(SRC_DIR)/strip.cpp
 
 # Create object file names by replacing .cpp with .o
 OBJS=$(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
