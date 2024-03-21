@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
 namespace co
 {
@@ -21,6 +22,8 @@ namespace co
 
         void print();
     };
+
+    int distance(const Strip &a, const Strip &b);
 
     std::vector<std::vector<std::vector<int>>> vec_to_mat(std::vector<int> &all, int w, int h, int c);
 

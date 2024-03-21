@@ -30,6 +30,27 @@ void co::Strip::print()
     }
 }
 
+// compute distance when a is on the left and b is on the right
+int co::distance(const Strip &a, const Strip &b)
+{
+    assert(a.h == b.h);
+    assert(a.c == b.c);
+
+    int aj = a.w - 1;
+    int bj = 0;
+
+    int sum = 0;
+    for (int i = 0; i < a.h; ++i)
+    {
+        for (int k = 0; k < a.c; ++k)
+        {
+            sum += std::abs(a.pixels[i][aj][k] - b.pixels[i][bj][k]);
+        }
+    }
+
+    return sum;
+}
+
 std::vector<std::vector<std::vector<int>>> co::vec_to_mat(std::vector<int> &all, int w, int h, int c)
 {
     std::vector<std::vector<std::vector<int>>> mat(h, std::vector<std::vector<int>>(w, std::vector<int>(c, 0)));

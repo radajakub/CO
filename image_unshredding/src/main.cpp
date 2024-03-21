@@ -63,13 +63,15 @@ int main(int argc, char *argv[])
 
     std::vector<co::Strip> strips = load(input_path);
 
-    std::cout << "here" << std::endl;
-
     for (co::Strip &strip : strips)
     {
         strip.print();
         std::cout << std::endl;
     }
+
+    std::cout << "test distance" << std::endl;
+    std::cout << "S(1) | S(2) -> " << co::distance(strips[0], strips[1]) << std::endl;
+    std::cout << "S(2) | S(1) -> " << co::distance(strips[1], strips[0]) << std::endl;
 
     return 0;
 }
