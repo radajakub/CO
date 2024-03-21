@@ -1,13 +1,13 @@
 #include <gurobi_c++.h>
-#include <iostream>
-#include <iomanip>
+
 #include <fstream>
+#include <iomanip>
+#include <iostream>
 #include <string>
 
 #include "strip.h"
 
-int solve()
-{
+int solve() {
     GRBEnv env;
     GRBModel model(env);
 
@@ -26,9 +26,7 @@ int solve()
     return obj_value;
 }
 
-std::vector<co::Strip> load(const std::string &path)
-{
-
+std::vector<co::Strip> load(const std::string &path) {
     std::ifstream f(path, std::ios_base::in);
     int n, w, h;
     int c = 3;
@@ -38,11 +36,9 @@ std::vector<co::Strip> load(const std::string &path)
 
     f >> n >> w >> h;
 
-    for (int i = 0; i < n; ++i)
-    {
+    for (int i = 0; i < n; ++i) {
         std::vector<int> row(w * h * c);
-        for (int j = 0; j < w * h * c; ++j)
-        {
+        for (int j = 0; j < w * h * c; ++j) {
             f >> row[j];
         }
         strips.push_back(co::Strip(w, h, c, row));
@@ -51,10 +47,8 @@ std::vector<co::Strip> load(const std::string &path)
     return strips;
 }
 
-int main(int argc, char *argv[])
-{
-    if (argc < 3)
-    {
+int main(int argc, char *argv[]) {
+    if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " <input_file> <output_file>" << std::endl;
         return 1;
     }
@@ -66,16 +60,13 @@ int main(int argc, char *argv[])
 
     std::vector<std::vector<int>> distances = co::distance_matrix(strips);
 
-    for (co::Strip &strip : strips)
-    {
+    for (co::Strip &strip : strips) {
         strip.print();
         std::cout << std::endl;
     }
 
-    for (int i = 0; i < distances.size(); ++i)
-    {
-        for (int j = 0; j < distances[i].size(); ++j)
-        {
+    for (int i = 0; i < distances.size(); ++i) {
+        for (int j = 0; j < distances[i].size(); ++j) {
             std::cout << std::setw(3) << std::setfill(' ') << distances[i][j] << " ";
         }
         std::cout << std::endl;

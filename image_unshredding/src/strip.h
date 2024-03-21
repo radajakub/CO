@@ -1,16 +1,14 @@
 #ifndef __STRIP_H__
 #define __STRIP_H__
 
-#include <vector>
-#include <iostream>
-#include <iomanip>
 #include <cassert>
+#include <iomanip>
+#include <iostream>
+#include <vector>
 
-namespace co
-{
+namespace co {
 
-    class Strip
-    {
+    class Strip {
     public:
         int w;
         int h;
