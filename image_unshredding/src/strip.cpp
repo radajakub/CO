@@ -5,7 +5,23 @@ co::Strip::Strip(int w, int h, int c, std::vector<int> &row) {
     this->h = h;
     this->c = c;
 
-    this->pixels = co::vec_to_mat(row, w, h, c);
+    this->pixels = std::vector<std::vector<std::vector<int>>>(h, std::vector<std::vector<int>>(w, std::vector<int>(c, 0)));
+
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    for (int pixel : row) {
+        this->pixels[i][j][k] = pixel;
+        ++k;
+        if (k == 3) {
+            k = 0;
+            ++j;
+            if (j == w) {
+                j = 0;
+                ++i;
+            }
+        }
+    }
 }
 
 void co::Strip::print() {
@@ -57,28 +73,4 @@ std::vector<std::vector<int>> co::distance_matrix(
     }
 
     return distances;
-}
-
-std::vector<std::vector<std::vector<int>>> co::vec_to_mat(std::vector<int> &all,
-                                                          int w, int h, int c) {
-    std::vector<std::vector<std::vector<int>>> mat(
-        h, std::vector<std::vector<int>>(w, std::vector<int>(c, 0)));
-
-    int i = 0;
-    int j = 0;
-    int k = 0;
-    for (int n = 0; n < all.size(); ++n) {
-        mat[i][j][k] = all[n];
-        ++k;
-        if (k == 3) {
-            k = 0;
-            ++j;
-            if (j == w) {
-                j = 0;
-                ++i;
-            }
-        }
-    }
-
-    return mat;
 }
