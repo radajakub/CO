@@ -4,6 +4,10 @@ void Edge::println() {
     std::cout << this->start << "-(" << this->l << "|_|" << this->u << ")->" << this->end << std::endl;
 }
 
+void Edge::println(int f) {
+    std::cout << this->start << "-(" << this->l << "|" << f << "|" << this->u << ")->" << this->end << std::endl;
+}
+
 Network::Network(std::string &path) {
     std::ifstream f(path, std::ios_base::in);
 
@@ -65,7 +69,7 @@ void Network::add_edge(int start, int end, int l, int u) {
     this->E++;
 }
 
-void Network::print() {
+void Network::_print_start() {
     std::cout << "G = (" << this->V << "," << this->E << ")" << std::endl;
     std::cout << std::endl;
 
@@ -87,14 +91,9 @@ void Network::print() {
     }
     std::cout << std::endl;
     std::cout << std::endl;
+}
 
-    std::cout << "Edges:" << std::endl;
-    for (int i = 0; i < this->E; ++i) {
-        std::cout << i << ": ";
-        this->edges[i].println();
-    }
-    std::cout << std::endl;
-
+void Network::_print_end() {
     std::cout << "Adjacency:" << std::endl;
     for (int v = 0; v < this->V; ++v) {
         std::cout << v << ":";
@@ -104,4 +103,33 @@ void Network::print() {
         std::cout << std::endl;
     }
     std::cout << std::endl;
+}
+
+void Network::print() {
+    this->_print_start();
+    std::cout << "Edges:" << std::endl;
+    for (int i = 0; i < this->E; ++i) {
+        std::cout << i << ": ";
+        this->edges[i].println();
+    }
+    std::cout << std::endl;
+    this->_print_end();
+}
+
+void Network::print(Flow &flow) {
+    this->_print_start();
+    std::cout << "Edges:" << std::endl;
+    for (int e = 0; e < this->E; ++e) {
+        std::cout << e << ": ";
+        this->edges[e].println(flow.f[e]);
+    }
+    std::cout << std::endl;
+    this->_print_end();
+}
+
+bool Flow::check_feasible(Network &network) {
+    for (int e = 0; e < network.E; ++e)
+        if (this->f[e] < network.edges[e].l || this->f[e] > network.edges[e].u)
+            return false;
+    return true;
 }

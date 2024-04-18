@@ -4,7 +4,9 @@
 
 #include "network.h"
 
-void initial(Network &network) {
+Flow initial(Network &network) {
+    Flow flow(network);
+    return flow;
 }
 
 int main(int argc, char *argv[]) {
@@ -19,7 +21,11 @@ int main(int argc, char *argv[]) {
     Network network(in_file);
     network.print();
 
-    initial(network);
+    Flow flow = initial(network);
+    network.print(flow);
+
+    bool feasible = flow.check_feasible(network);
+    std::cout << "Feasible: " << feasible << std::endl;
 
     return 0;
 }
