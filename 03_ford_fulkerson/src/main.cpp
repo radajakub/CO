@@ -4,6 +4,9 @@
 
 #include "network.h"
 
+void initial(Network &network) {
+}
+
 int main(int argc, char *argv[]) {
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " <input_file> <output_file>" << std::endl;
@@ -15,6 +18,8 @@ int main(int argc, char *argv[]) {
 
     Network network(in_file);
     network.print();
+
+    initial(network);
 
     return 0;
 }
