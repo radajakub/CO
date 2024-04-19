@@ -28,7 +28,6 @@ Network::Network(std::string &path) {
     std::iota(this->ps.begin(), this->ps.end(), C + 1);
     this->t = this->C + this->P + 1;
 
-    this->adjacency.resize(this->V);
     this->edges.reserve(((this->V - 1) * this->V) / 2);
 
     int l, u, p;
@@ -57,16 +56,34 @@ Network::Network(std::string &path) {
     for (int i = 0; i < this->P; ++i) {
         lstream >> vi;
         // add edge leading from product pi to sink t with capacity [vi, inf)
-        this->add_edge(this->ps[i], this->t, vi, std::numeric_limits<int>::max());
+        this->add_edge(this->ps[i], this->t, vi, INF);
     }
 
     f.close();
 }
 
+Network::Network(int V) : V(V) {
+    this->C = -1;
+    this->P = -1;
+    this->cs = {};
+    this->ps = {};
+
+    this->s = 0;
+    this->t = V - 1;
+    this->E = 0;
+    this->edges.reserve(((this->V - 1) * this->V) / 2);
+}
+
 void Network::add_edge(int start, int end, int l, int u) {
     this->edges.push_back(Edge(start, end, l, u));
-    this->adjacency[start].push_back(this->E);
     this->E++;
+}
+
+bool Network::need_initial() {
+    for (Edge &e : this->edges)
+        if (e.l != 0)
+            return true;
+    return false;
 }
 
 void Network::_print_start() {
@@ -93,18 +110,6 @@ void Network::_print_start() {
     std::cout << std::endl;
 }
 
-void Network::_print_end() {
-    std::cout << "Adjacency:" << std::endl;
-    for (int v = 0; v < this->V; ++v) {
-        std::cout << v << ":";
-        for (int e : this->adjacency[v]) {
-            std::cout << " " << e;
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-}
-
 void Network::print() {
     this->_print_start();
     std::cout << "Edges:" << std::endl;
@@ -113,7 +118,6 @@ void Network::print() {
         this->edges[i].println();
     }
     std::cout << std::endl;
-    this->_print_end();
 }
 
 void Network::print(Flow &flow) {
@@ -124,7 +128,6 @@ void Network::print(Flow &flow) {
         this->edges[e].println(flow.f[e]);
     }
     std::cout << std::endl;
-    this->_print_end();
 }
 
 bool Flow::check_feasible(Network &network) {

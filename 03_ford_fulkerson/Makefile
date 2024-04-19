@@ -7,7 +7,7 @@ BUILD_DIR=./build
 CXXFLAGS=-std=c++11 -O2 -march=native -pthread
 
 # Find all the C++ files in src and test directories
-SRCS=$(SRC_DIR)/network.cpp $(SRC_DIR)/main.cpp
+SRCS=$(SRC_DIR)/network.cpp $(SRC_DIR)/ford_fulkerson.cpp $(SRC_DIR)/main.cpp
 
 # Create object file names by replacing .cpp with .o
 OBJS=$(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))

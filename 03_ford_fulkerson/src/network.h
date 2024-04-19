@@ -4,9 +4,13 @@
 #include <fstream>
 #include <iostream>
 #include <numeric>
+#include <queue>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
+
+const int INF = std::numeric_limits<int>::max();
 
 class Edge;
 class Network;
@@ -40,14 +44,14 @@ public:
 
     std::vector<Edge> edges;  // list of all edges
 
-    std::vector<std::vector<int>> adjacency;  // adjacency list
-
     Network(std::string &path);
+    Network(int V);
 
     void add_edge(int start, int end, int l, int u);
 
+    bool need_initial();
+
     void _print_start();
-    void _print_end();
     void print();
     void print(Flow &flow);
 };
