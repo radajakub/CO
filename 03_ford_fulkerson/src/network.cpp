@@ -86,6 +86,22 @@ bool Network::need_initial() {
     return false;
 }
 
+void Network::save_solution(Flow &flow, std::string &path) {
+    std::ofstream f(path, std::ios_base::out);
+
+    for (int ci : this->cs) {
+        for (int ei = 0; ei < this->E; ++ei) {
+            Edge &e = this->edges[ei];
+            if (e.start == ci && flow.f[ei] == 1) {
+                f << (e.end - this->C) << " ";
+            }
+        }
+        f << std::endl;
+    }
+
+    f.close();
+}
+
 void Network::_print_start() {
     std::cout << "G = (" << this->V << "," << this->E << ")" << std::endl;
     std::cout << std::endl;

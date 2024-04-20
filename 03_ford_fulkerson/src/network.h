@@ -10,7 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
-const int INF = std::numeric_limits<int>::max();
+// const int INF = std::numeric_limits<int>::max();
+const int INF = 1000;
 
 class Edge;
 class Network;
@@ -50,6 +51,8 @@ public:
     void add_edge(int start, int end, int l, int u);
 
     bool need_initial();
+
+    void save_solution(Flow &flow, std::string &path);
 
     void _print_start();
     void print();
